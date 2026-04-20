@@ -36,19 +36,19 @@ jobs:
           path: build.tar.gz
 
   deploy:
-  runs-on: ubuntu-latest
-  needs: build
+    runs-on: ubuntu-latest
+    needs: build
 
-  steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: nest-build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nest-build
 
-    - name: Extract build
-      run: tar -xzf build.tar.gz
+      - name: Extract build
+        run: tar -xzf build.tar.gz
 
-    - name: Simulate deployment
-      run: |
-        echo "Deploying application..."
-        ls -la
+      - name: Simulate deployment
+        run: |
+          echo "Deploying application..."
+          ls -la
