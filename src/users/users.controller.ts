@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -18,28 +21,35 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() dto: CreateUserDto) {
+  createUser(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
+  findAllUsers() {
     return this.usersService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  findOneUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(
+  updateUser(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateUserDto,
   ) {
     return this.usersService.update(id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.remove(id);
   }
 }
