@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import type { SignOptions } from 'jsonwebtoken';
+import type { EnvironmentVariables } from '../config/environment-variables.type';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -10,11 +11,10 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => {
-        const expiresIn = (config.get<string>('JWT_EXPIRES_IN') ??
-          '7d') as SignOptions['expiresIn'];
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) => {
+        const expiresIn = config.get('JWT_EXPIRES_IN', '7d') as SignOptions['expiresIn'];
         return {
-          secret: config.getOrThrow<string>('JWT_SECRET'),
+          secret: config.getOrThrow('JWT_SECRET'),
           signOptions: { expiresIn },
         };
       },
