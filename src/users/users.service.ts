@@ -89,6 +89,13 @@ export class UsersService {
     return this.toPublic(saved);
   }
 
+  async remove(id: string): Promise<void> {
+    const result = await this.usersRepository.delete(id);
+    if (!result.affected) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
   async findWithPasswordByEmail(email: string): Promise<User | null> {
     return this.usersRepository
       .createQueryBuilder('user')
