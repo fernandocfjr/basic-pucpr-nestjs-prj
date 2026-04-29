@@ -11,7 +11,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService<EnvironmentVariables, true>) => {
-        const expiresIn = config.get('JWT_EXPIRES_IN', '7d');
+        const expiresIn = config.getOrThrow('JWT_EXPIRES_IN');
         return {
           secret: config.getOrThrow('JWT_SECRET'),
           signOptions: { expiresIn },
