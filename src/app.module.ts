@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import type { EnvironmentVariables } from './config/environment-variables.type';
+import { validateEnv } from './config/validate-env';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -11,18 +13,19 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
+      validate: validateEnv,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) => ({
         type: 'mysql',
-        host: config.get<string>('DB_HOST', 'localhost'),
-        port: Number(config.get('DB_PORT')) || 3306,
-        username: config.get<string>('DB_USERNAME', 'root'),
-        password: config.get<string>('DB_PASSWORD', ''),
-        database: config.get<string>('DB_DATABASE', 'pucpr'),
+        host: config.getOrThrow('DB_HOST'),
+        port: Number(config.getOrThrow('DB_PORT')),
+        username: config.getOrThrow('DB_USERNAME'),
+        password: config.getOrThrow('DB_PASSWORD'),
+        database: config.getOrThrow('DB_DATABASE'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: config.getOrThrow('DB_SYNCHRONIZE') === 'true',
       }),
       inject: [ConfigService],
     }),

@@ -2,6 +2,14 @@
 
 Basic CRUD for PUCPR project
 
+## Environment variables
+
+Create a `.env` file based on `.env.example`.
+
+- `JWT_SECRET` is mandatory and used by both JWT signing and validation.
+- Do not keep the placeholder JWT secret from `.env.example`.
+- Use `DB_SYNCHRONIZE=false` in production.
+
 ## Project setup
 
 ```bash
