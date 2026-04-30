@@ -16,6 +16,6 @@ jobs:
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
-            "content": "🚀 Nova Pull Request aberta:\n${{ github.event.pull_request.title }}\nAutor: ${{ github.actor }}\nBranch: ${{ github.head_ref }} → ${{ github.base_ref }}\nURL: ${{ github.event.pull_request.html_url }}"
+            "content": "🚀 Nova Pull Request aberta: ${{ github.event.pull_request.title }}\n\nAutor: ${{ github.actor }}\nBranch: ${{ github.head_ref }} → ${{ github.base_ref }}\nURL: ${{ github.event.pull_request.html_url }}"
           }' \
           ${{ secrets.DISCORD_WEBHOOK }}
