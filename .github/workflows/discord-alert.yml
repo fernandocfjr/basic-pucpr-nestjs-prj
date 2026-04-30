@@ -9,7 +9,6 @@ on:
 jobs:
   Discord_notification:
     runs-on: ubuntu-latest
-    needs: lint
 
     steps:
       - name: Send Discord notification
