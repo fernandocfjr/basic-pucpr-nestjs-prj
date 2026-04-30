@@ -22,3 +22,16 @@ jobs:
 
       - name: Run the linter
         run: yarn lint
+
+  Discord_notification:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Discord Webhook
+        uses: mrrobotdotapp/classic-discord-webhook@main
+        with:
+          id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
